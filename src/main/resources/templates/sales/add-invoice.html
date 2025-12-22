@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tambah Invoice Penjualan</title>
+    <link rel="stylesheet" href="/css/sales.css" />
+  </head>
+  <body>
+    <div class="page-header">
+      <h1>Tambah Invoice Penjualan</h1>
+    </div>
+
+    <main class="container">
+      <div class="main-container">
+        <!-- Error Message -->
+        <div th:if="${error}" class="error-message">
+          ❌ <span th:text="${error}"></span>
+        </div>
+
+        <!-- Back Button -->
+        <a th:href="@{/sales/list(role=${userRole})}" class="back-btn">
+          ← Kembali ke Daftar Invoice
+        </a>
+
+        <!-- Role Badge -->
+        <div class="role-badge" style="margin-bottom: var(--spacing-lg)">
+          Role: <strong th:text="${userRole}"></strong>
+        </div>
+
+        <!-- Invoice Form -->
+        <form
+          th:action="@{/sales/add}"
+          method="post"
+          th:object="${salesInvoice}"
+        >
+          <input type="hidden" name="role" th:value="${userRole}" />
+
+          <h2>Form Invoice Penjualan</h2>
+
+          <!-- Basic Information -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="customerName">Nama Customer *</label>
+              <input
+                type="text"
+                id="customerName"
+                th:field="*{customerName}"
+                placeholder="Masukkan nama customer"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="invoiceNumber">No. Invoice *</label>
+              <input
+                type="text"
+                id="invoiceNumber"
+                th:field="*{invoiceNumber}"
+                placeholder="INV-YYYYMMDD-001"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="vatPercentage">Pajak (%)</label>
+              <input
+                type="number"
+                id="vatPercentage"
+                th:field="*{vatPercentage}"
+                step="1"
+                min="0"
+                max="100"
+                placeholder="0"
+              />
+            </div>
+          </div>
+
+          <hr class="mt-4 mb-4" />
+
+          <!-- Product Items Section -->
+          <div class="items-container">
+            <div class="items-header">
+              <h3>Detail Produk</h3>
+              <div class="role-badge">
+                <span id="rowCount">0</span> / 5 Produk
+              </div>
+            </div>
+
+            <!-- Hidden Product Template -->
+            <select id="productTemplate" class="hidden">
+              <option value="">-- Pilih Produk --</option>
+              <option
+                th:each="p : ${products}"
+                th:value="${p.id}"
+                th:text="${p.productName}"
+                th:attr="data-price=${p.standardSellingPrice}"
+              ></option>
+            </select>
+
+            <!-- Dynamic Items Container -->
+            <div id="items" class="items-list">
+              <!-- Items will be added here dynamically -->
+            </div>
+
+            <!-- Add Item Button -->
+            <button type="button" class="add-item-btn" onclick="addItemRow()">
+              + Tambah Produk
+            </button>
+          </div>
+
+          <!-- Total Display -->
+          <div class="form-group mt-4" style="text-align: right">
+            <div
+              style="font-size: 18px; font-weight: 600; color: var(--text-dark)"
+            >
+              Total: <span id="totalDisplay" class="currency">Rp 0</span>
+            </div>
+            <input type="hidden" th:field="*{totalSales}" />
+          </div>
+
+          <!-- Form Actions -->
+          <div class="btn-group">
+            <button type="submit" class="btn btn-primary">
+              💾 Simpan Invoice
+            </button>
+            <a
+              th:href="@{/sales/list(role=${userRole})}"
+              class="btn btn-secondary"
+            >
+              Batal
+            </a>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script src="/js/sales.js"></script>
+  </body>
+</html>

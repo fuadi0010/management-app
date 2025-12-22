@@ -1,0 +1,429 @@
+/* ============================================
+   STAFF DASHBOARD CSS - TEMA BIRU
+============================================ */
+
+/* ========== BASE STYLES ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, rgba(227, 227, 227, 0.3) 0%, rgba(227, 227, 227, 0.6) 100%);
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ========== DASHBOARD LAYOUT ========== */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ========== SIDEBAR STYLES ========== */
+.sidebar {
+    width: 280px;
+    background: linear-gradient(180deg, #1B3C53 0%, #234C6A 100%);
+    color: white;
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 15px rgba(27, 60, 83, 0.2);
+    z-index: 100;
+}
+
+/* Staff Info */
+.staff-info {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.staff-avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #234C6A, #456882);
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(27, 60, 83, 0.3);
+}
+
+.staff-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.staff-role {
+    font-size: 0.9rem;
+    color: #a3c5e0;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 5px 15px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.staff-details {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.detail-item {
+    margin-bottom: 12px;
+    padding: 8px 0;
+}
+
+.detail-label {
+    font-size: 0.8rem;
+    color: #a3c5e0;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-value {
+    font-size: 0.95rem;
+    color: white;
+    font-weight: 500;
+}
+
+.sidebar-clock {
+    font-family: 'Courier New', monospace;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+    flex-grow: 1;
+    margin-bottom: 30px;
+}
+
+.menu-title {
+    font-size: 0.9rem;
+    color: #a3c5e0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    color: #d1e4f5;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: translateX(5px);
+}
+
+.menu-item.active {
+    background: rgba(35, 76, 106, 0.3);
+    color: white;
+    border-left: 4px solid #456882;
+}
+
+.menu-icon {
+    font-size: 1.2rem;
+    margin-right: 12px;
+    width: 24px;
+    text-align: center;
+}
+
+/* Logout Button/Link */
+.logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(220, 53, 69, 0.2);
+    color: #fecaca;
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: auto;
+    text-decoration: none;
+    text-align: center;
+}
+
+.logout-btn:hover {
+    background: rgba(220, 53, 69, 0.3);
+    color: #fca5a5;
+    transform: translateY(-2px);
+}
+
+/* ========== MAIN CONTENT ========== */
+.main-content {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+    margin-bottom: 40px;
+}
+
+.header-title {
+    font-size: 2.2rem;
+    color: #1B3C53;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.header-subtitle {
+    color: #234C6A;
+    font-size: 1.1rem;
+}
+
+/* ========== QUICK ACTIONS ========== */
+.quick-actions {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    color: #1B3C53;
+    margin-bottom: 25px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    flex-grow: 1;
+}
+
+.action-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(27, 60, 83, 0.1);
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    justify-content: center;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(35, 76, 106, 0.15);
+    border-color: #456882;
+}
+
+.action-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(227, 227, 227, 0.3), rgba(227, 227, 227, 0.6));
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.action-card:hover .action-icon {
+    background: linear-gradient(135deg, #234C6A, #456882);
+    color: white;
+}
+
+.action-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1B3C53;
+    margin-bottom: 8px;
+}
+
+.action-desc {
+    font-size: 0.9rem;
+    color: #456882;
+    line-height: 1.5;
+}
+
+/* ========== NOTIFICATIONS ========== */
+.dashboard-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    animation: slideIn 0.3s ease;
+    color: white;
+}
+
+.notification-success {
+    background: #234C6A;
+}
+
+.notification-error {
+    background: #ef4444;
+}
+
+.notification-info {
+    background: #456882;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.notification-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ========== ANIMATIONS ========== */
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 240px;
+    }
+    
+    .actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        padding: 20px;
+    }
+    
+    .main-content {
+        padding: 20px;
+    }
+    
+    .actions-grid {
+        grid-template-columns: 1fr;
+        min-height: 400px;
+    }
+    
+    .staff-info {
+        margin-bottom: 20px;
+    }
+    
+    .header-title {
+        font-size: 1.8rem;
+    }
+    
+    .section-title {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-header {
+        margin-bottom: 30px;
+    }
+    
+    .header-title {
+        font-size: 1.5rem;
+    }
+    
+    .header-subtitle {
+        font-size: 1rem;
+    }
+    
+    .action-card {
+        padding: 20px;
+    }
+    
+    .action-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
+    
+    .action-title {
+        font-size: 1.1rem;
+    }
+    
+    .sidebar-menu {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .menu-item {
+        flex: 1;
+        min-width: 120px;
+        justify-content: center;
+        padding: 10px;
+    }
+    
+    .menu-icon {
+        margin-right: 8px;
+    }
+}

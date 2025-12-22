@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laporan Detail Pembelian</title>
+  <link rel="stylesheet" href="/css/purchase.css" />
+</head>
+<body>
+  <div class="page-header">
+    <h1>Detail Pembelian</h1>
+  </div>
+  
+  <main class="container">
+    <div class="main-container">
+      <!-- Back Button -->
+      <a th:href="@{/purchase/list(role=${userRole})}" class="back-btn">
+        ← Kembali ke Daftar Pembelian
+      </a>
+      
+      <!-- Role Badge -->
+      <div class="role-badge" style="margin-bottom: var(--spacing-lg);">
+        Role: <strong th:text="${userRole}"></strong>
+      </div>
+      
+      <!-- Purchase Details -->
+      <div class="invoice-detail">
+        <div class="detail-grid">
+          <div class="detail-item">
+            <strong>No. Referensi</strong>
+            <span th:text="${purchase.referenceNumber}"></span>
+          </div>
+          
+          <div class="detail-item">
+            <strong>Supplier</strong>
+            <span th:text="${purchase.supplier.supplierName}"></span>
+          </div>
+          
+          <div class="detail-item">
+            <strong>Tanggal Pembelian</strong>
+            <span th:text="${#temporals.format(purchase.purchaseDate, 'dd-MM-yyyy HH:mm')}"></span>
+          </div>
+          
+          <div class="detail-item">
+            <strong>Status</strong>
+            <span th:classappend="'status-badge status-' + ${purchase.status?.toString()?.toLowerCase()}"
+                  th:text="${purchase.status}"></span>
+          </div>
+        </div>
+        
+        <!-- Product Details -->
+        <h3 class="mt-4 mb-3">Detail Barang</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Produk</th>
+              <th class="text-right">Quantity</th>
+              <th class="text-right">Harga Beli</th>
+              <th class="text-right">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="d, stat : ${purchase.purchaseDetails}">
+              <td th:text="${stat.index + 1}"></td>
+              <td th:text="${d.product.productName}"></td>
+              <td class="text-right" th:text="${d.quantity}"></td>
+              <td class="currency text-right">
+                Rp <span th:text="${#numbers.formatDecimal(d.unitPurchasePrice,0,'COMMA',2,'POINT')}"></span>
+              </td>
+              <td class="currency text-right">
+                Rp <span th:text="${#numbers.formatDecimal(d.subtotal,0,'COMMA',2,'POINT')}"></span>
+              </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(purchase.purchaseDetails)}">
+              <td colspan="5" class="empty-state">Tidak ada detail barang</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <!-- Total Section -->
+        <div class="total-section">
+          <div class="total-item">
+            <span class="total-label">Jumlah Item:</span>
+            <span class="total-value" th:text="${#lists.size(purchase.purchaseDetails)}"></span>
+          </div>
+          <div class="total-item">
+            <span class="total-label">Total Kuantitas:</span>
+            <span class="total-value" th:text="${#aggregates.sum(purchase.purchaseDetails.![quantity])}"></span>
+          </div>
+          <div class="total-item grand-total">
+            <span class="total-label">TOTAL PEMBELIAN:</span>
+            <span class="total-value currency">
+              Rp <span th:text="${#numbers.formatDecimal(purchase.totalPurchase,0,'COMMA',2,'POINT')}"></span>
+            </span>
+          </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="btn-group mt-4">
+          <a th:href="@{/purchase/list(role=${userRole})}" class="btn btn-secondary">
+            ← Kembali ke Daftar
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Pembelian</title>
+    <link rel="stylesheet" href="/css/purchase.css" />
+  </head>
+  <body class="list-page">
+    <div class="container">
+      <!-- Page Header - Simplified seperti gambar -->
+      <div class="page-header">
+        <h1 class="page-title">DAFTAR PEMBELIAN</h1>
+        <div class="header-actions"></div>
+      </div>
+
+      <!-- Action Bar - Disederhanakan seperti gambar -->
+      <div class="action-bar">
+        <div class="action-left">
+          <a th:href="${dashboardUrl}" class="btn btn-back">
+            ← Dashboard
+            <span th:text="${userRole == 'admin' ? 'Admin' : 'Staff'}"></span>
+          </a>
+        </div>
+        <div class="action-right">
+          <a
+            th:href="@{/purchase/add(role=${userRole})}"
+            class="btn btn-primary"
+          >
+            tombol tambah
+          </a>
+        </div>
+      </div>
+
+      <!-- Content Container -->
+      <div class="content-container">
+        <!-- Flash Messages -->
+        <div th:if="${successMessage}" class="alert alert-success">
+          <span th:text="${successMessage}"></span>
+        </div>
+
+        <div th:if="${errorMessage}" class="alert alert-error">
+          <span th:text="${errorMessage}"></span>
+        </div>
+        <form method="get" th:action="@{/purchase/list}" class="search-bar">
+          <input type="hidden" name="role" th:value="${userRole}" />
+
+          <input
+            type="text"
+            name="keyword"
+            placeholder="Cari No Referensi / Supplier"
+            th:value="${keyword}"
+          />
+
+          <select name="sort">
+            <option value="date_desc" th:selected="${sort == 'date_desc'}">
+              Tanggal Terbaru
+            </option>
+            <option value="date_asc" th:selected="${sort == 'date_asc'}">
+              Tanggal Terlama
+            </option>
+            <option value="total_desc" th:selected="${sort == 'total_desc'}">
+              Total Terbesar
+            </option>
+            <option value="total_asc" th:selected="${sort == 'total_asc'}">
+              Total Terkecil
+            </option>
+          </select>
+
+          <button type="submit" class="btn btn-primary">Cari</button>
+        </form>
+
+        <!-- Table Container -->
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>No. Referensi</th>
+                <th>Supplier</th>
+                <th>Tanggal</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="purchase : ${purchases}">
+                <td th:text="${purchase.referenceNumber}"></td>
+                <td th:text="${purchase.supplier?.supplierName}"></td>
+                <td
+                  th:text="${#temporals.format(purchase.purchaseDate, 'dd-MM-yyyy')}"
+                ></td>
+                <td class="text-right">
+                  Rp
+                  <span
+                    th:text="${#numbers.formatDecimal(purchase.totalPurchase, 0, 'COMMA', 2, 'POINT')}"
+                  ></span>
+                </td>
+                <td>
+                  <span
+                    th:classappend="'status-badge status-' + ${purchase.status?.toString()?.toLowerCase()}"
+                    th:text="${purchase.status}"
+                  >
+                  </span>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <a
+                      th:href="@{/purchase/view/{id}(id=${purchase.id}, role=${userRole})}"
+                      class="btn-action btn-view"
+                    >
+                      Lihat
+                    </a>
+                    <a
+                      th:if="${purchase.status?.toString() == 'CREATED'}"
+                      th:href="@{/purchase/complete/{id}(id=${purchase.id}, role=${userRole})}"
+                      class="btn-action btn-complete"
+                      onclick="return confirm('Tandai pembelian sebagai selesai?')"
+                      >Selesai</a
+                    >
+
+                    <a
+                      th:if="${purchase.status?.toString() == 'CREATED'}"
+                      th:href="@{/purchase/cancel/{id}(id=${purchase.id}, role=${userRole})}"
+                      class="btn-action btn-delete"
+                      onclick="return confirm('Batalkan pembelian ini?')"
+                      >Batal</a
+                    >
+                  </div>
+                </td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(purchases)}">
+                <td colspan="6" class="empty-state">
+                  Tidak ada data pembelian
+                  <a
+                    th:href="@{/purchase/add(role=${userRole})}"
+                    class="btn btn-primary btn-small"
+                  >
+                    + Tambah Pembelian Pertama
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/purchase.js"></script>
+  </body>
+</html>

@@ -1,0 +1,219 @@
+/* ===== RESET & BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: linear-gradient(135deg, #1B3C53 0%, #234C6A 100%);
+    color: #333;
+    line-height: 1.5;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/* ===== CONTAINER STYLES ===== */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.auth-box {
+    width: 100%;
+    max-width: 440px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(27, 60, 83, 0.2);
+    padding: 40px;
+    position: relative;
+    animation: fadeInUp 0.6s ease;
+}
+
+/* ===== HEADER ===== */
+.auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-header h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #234C6A 0%, #456882 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.auth-header p {
+    color: #718096;
+    font-size: 14px;
+}
+
+/* ===== FORM STYLES ===== */
+.auth-form {
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #4a5568;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #234C6A;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(35, 76, 106, 0.1);
+}
+
+.form-group small {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #718096;
+}
+
+/* ===== BUTTONS ===== */
+.auth-button {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #234C6A 0%, #456882 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.auth-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(35, 76, 106, 0.3);
+}
+
+.auth-button:active {
+    transform: translateY(0);
+}
+
+/* ===== LINK STYLES ===== */
+.auth-links {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.auth-links a {
+    color: #234C6A;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.auth-links a:hover {
+    color: #1B3C53;
+    text-decoration: underline;
+}
+
+/* ===== MESSAGE STYLES ===== */
+.auth-message {
+    padding: 16px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideIn 0.5s ease;
+}
+
+.success-message {
+    background: linear-gradient(135deg, #e3eff9 0%, #d1e4f5 100%);
+    color: #0c5460;
+    border: 1px solid #b8daff;
+}
+
+.error-message {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+    .auth-box {
+        padding: 30px 20px;
+        margin: 10px;
+    }
+    
+    .auth-header h2 {
+        font-size: 24px;
+    }
+    
+    .form-group input {
+        padding: 12px 14px;
+    }
+    
+    .auth-button {
+        padding: 14px;
+    }
+}
+
+/* ===== PREVENT SCROLL ===== */
+.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+}

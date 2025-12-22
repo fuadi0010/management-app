@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Admin - Sistem Manajemen</title>
+    <!-- Link ke CSS terpisah -->
+    <link rel="stylesheet" th:href="@{/css/admin-dashboard.css}" />
+  </head>
+  <body>
+    <!-- Header -->
+    <div class="header">
+      <div class="header-container">
+        <h2 style="margin: 0">Sistem Manajemen - Admin Dashboard</h2>
+        <div>
+          <span style="margin-right: 20px">
+            Selamat datang, <strong th:text="${user?.name}"></strong>
+          </span>
+          <a href="/access/logout" class="logout-btn"> Logout </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+      <!-- Sidebar Navigasi -->
+      <div class="sidebar">
+        <h3 class="sidebar-title">Menu Admin</h3>
+
+        <div class="menu-section">
+          <h4 class="menu-title">Manajemen User</h4>
+          <ul class="menu-list">
+            <li class="menu-item">
+              <a href="#user-pending" class="menu-link">User Pending</a>
+            </li>
+            <li class="menu-item">
+              <a th:href="@{/admin/users}" class="menu-link">User</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu-section">
+          <h4 class="menu-title">Aplikasi</h4>
+          <ul class="menu-list">
+            <li class="menu-item">
+              <a href="/main/products?role=admin" class="menu-link role-link">
+                Produk
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="/main/suppliers?role=admin" class="menu-link role-link">
+                Supplier
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="/main/purchases?role=admin" class="menu-link role-link">
+                Pembelian
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="/main/invoices?role=admin" class="menu-link role-link">
+                Penjualan
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="/product/manage?role=admin" class="menu-link role-link">
+                Hidden
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="menu-section">
+          <h4 class="menu-title">Finance</h4>
+          <a href="/report/finance/preview" class="menu-link role-link"
+            >Finance Report</a
+          >
+        </div>
+      </div>
+
+      <!-- Konten Utama -->
+      <div class="content">
+        <!-- Info Admin -->
+        <div class="admin-info">
+          <h3 class="info-title">Informasi Admin</h3>
+          <table class="info-table">
+            <tr class="info-row">
+              <td class="info-label">Nama:</td>
+              <td class="info-value" th:text="${user?.name}"></td>
+            </tr>
+            <tr class="info-row">
+              <td class="info-label">Email:</td>
+              <td class="info-value" th:text="${user?.email}"></td>
+            </tr>
+            <tr>
+              <td class="info-label">Role:</td>
+              <td class="info-value">
+                <span th:text="${user?.role}" class="role-badge"></span>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Panel Kontrol Admin - Hanya User Pending -->
+        <div>
+          <h3 class="panel-title">Manajemen User Pending</h3>
+          <p style="margin-bottom: 20px; color: #065f46; font-size: 1.1rem">
+            Total: <strong th:text="${pendingUsersCount}">0</strong> user yang
+            perlu disetujui
+          </p>
+
+          <!-- Statistik User -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number stat-total" th:text="${totalUsers}">
+                0
+              </div>
+              <div class="stat-label">Total User</div>
+            </div>
+
+            <div class="stat-card">
+              <div
+                class="stat-number stat-pending"
+                th:text="${pendingUsersCount}"
+              >
+                0
+              </div>
+              <div class="stat-label">Menunggu Persetujuan</div>
+            </div>
+
+            <div id="user-pending" class="stat-card">
+              <div class="stat-number stat-active" th:text="${activeUsers}">
+                0
+              </div>
+              <div class="stat-label">User Aktif</div>
+            </div>
+          </div>
+
+          <!-- Tabel User Pending -->
+          <div class="pending-container">
+            <div class="table-header">
+              <div class="header-content">
+                <h4 class="table-title">User Menunggu Persetujuan</h4>
+              </div>
+            </div>
+
+            <div style="padding: 0">
+              <table class="users-table">
+                <thead>
+                  <tr class="table-header-row">
+                    <th class="table-th center" style="width: 60px">No</th>
+                    <th class="table-th">Username</th>
+                    <th class="table-th">Email</th>
+                    <th class="table-th" style="width: 180px">
+                      Tanggal Daftar
+                    </th>
+                    <th class="table-th center" style="width: 300px">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="pending-users-table">
+                  <tr th:if="${#lists.isEmpty(users)}">
+                    <td colspan="5" class="no-data">
+                      <i>Tidak ada user yang menunggu persetujuan</i>
+                    </td>
+                  </tr>
+                  <tr th:each="user, stat : ${users}">
+                    <td
+                      class="table-td center"
+                      th:text="${stat.index + 1}"
+                    ></td>
+                    <td class="table-td" th:text="${user.name}"></td>
+                    <td class="table-td" th:text="${user.email}"></td>
+                    <td
+                      class="table-td"
+                      th:text="${user.createdAt != null 
+                      ? #temporals.format(user.createdAt, 'dd-MM-yyyy HH:mm') 
+                      : '-'}"
+                    ></td>
+                    <td class="table-td center">
+                      <a
+                        th:href="@{/admin/users/approve/{id}(id=${user.id})}"
+                        class="action-btn btn-approve"
+                      >
+                        Approve
+                      </a>
+                      <a
+                        th:href="@{/admin/users/reject/{id}(id=${user.id})}"
+                        class="action-btn btn-reject"
+                        onclick="return confirm('Yakin tolak user ini?')"
+                      >
+                        Tolak
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="table-footer">
+              <div class="footer-content">
+                <div>
+                  <span class="last-updated">
+                    Terakhir diperbarui: <span id="last-updated">-</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Instruksi -->
+          <div class="instructions">
+            <h4 class="instructions-title">Instruksi:</h4>
+            <ol class="instructions-list">
+              <li class="instructions-item">
+                Review setiap user yang mendaftar
+              </li>
+              <li class="instructions-item">
+                Klik <strong>"Setujui"</strong> untuk mengaktifkan akun user
+              </li>
+              <li class="instructions-item">
+                Klik <strong>"Tolak"</strong> untuk menolak pendaftaran
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-container">
+        <p class="footer-text">
+          &copy; 2025 Sistem Manajemen. Hak Cipta Dilindungi.
+        </p>
+        <p class="footer-subtext">
+          Admin Dashboard - Data Real-time dari Database
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

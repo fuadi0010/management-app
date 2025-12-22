@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${product.id != null} ? 'Edit Produk' : 'Tambah Produk'">
+        Form Produk
+    </title>
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+<body class="form-page">
+    <div class="container">
+        <div class="header-section">
+            <a th:href="@{/product/list(role=${userRole})}" class="btn btn-back">
+                ← Kembali ke Daftar Produk
+            </a>
+            
+            <div class="role-badge" th:text="${userRole}">staff</div>
+        </div>
+
+        <div th:if="${successMessage}" class="alert alert-success">
+            <span th:text="${successMessage}"></span>
+        </div>
+
+        <div th:if="${error}" class="alert alert-danger">
+            <span th:text="${error}"></span>
+        </div>
+
+        <div class="form-header">
+            <h1 th:text="${product.id != null} ? 'Edit Produk' : 'Tambah Produk Baru'">
+                Form Produk
+            </h1>
+            <p class="subtitle">Lengkapi data produk dengan benar</p>
+        </div>
+
+        <form th:action="${formAction}" th:object="${product}" method="post" class="form-container" id="productForm">
+            <input type="hidden" name="role" th:value="${userRole}" />
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="productCode" class="form-label">
+                        Kode Produk <span class="required">*</span>
+                    </label>
+                    <input type="text" id="productCode" th:field="*{productCode}" 
+                           class="form-input" placeholder="PRD-001" required>
+                    <div th:if="${#fields.hasErrors('productCode')}" class="error-message">
+                        <span th:errors="*{productCode}"></span>
+                    </div>
+                    <div class="form-hint">Format Diawali PRD-</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="productName" class="form-label">
+                        Nama Produk <span class="required">*</span>
+                    </label>
+                    <input type="text" id="productName" th:field="*{productName}" 
+                           class="form-input" placeholder="Nama produk" required>
+                    <div th:if="${#fields.hasErrors('productName')}" class="error-message">
+                        <span th:errors="*{productName}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="currentStock" class="form-label">
+                        Stok <span class="required">*</span>
+                    </label>
+                    <input type="number" id="currentStock" th:field="*{currentStock}" 
+                           class="form-input" required min="0" th:readonly="${product.id != null}"
+                           placeholder="0">
+                    <div th:if="${#fields.hasErrors('currentStock')}" class="error-message">
+                        <span th:errors="*{currentStock}"></span>
+                    </div>
+                    <div class="form-hint" th:if="${product.id != null}">Stok hanya bisa diubah melalui transaksi</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="standardSellingPrice" class="form-label">
+                        Harga Jual <span class="required">*</span>
+                    </label>
+                    <div class="input-with-icon">
+                        <span class="input-icon">Rp</span>
+                        <input type="number" id="standardSellingPrice" th:field="*{standardSellingPrice}" 
+                               class="form-input" required min="0" placeholder="0">
+                    </div>
+                    <div th:if="${#fields.hasErrors('standardSellingPrice')}" class="error-message">
+                        <span th:errors="*{standardSellingPrice}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastPurchasePrice" class="form-label">
+                        Harga Beli <span class="required">*</span>
+                    </label>
+                    <div class="input-with-icon">
+                        <span class="input-icon">Rp</span>
+                        <input type="number" id="lastPurchasePrice" th:field="*{lastPurchasePrice}" 
+                               class="form-input" min="0" th:readonly="${product.id != null}"
+                               placeholder="0">
+                    </div>
+                    <div th:if="${#fields.hasErrors('lastPurchasePrice')}" class="error-message">
+                        <span th:errors="*{lastPurchasePrice}"></span>
+                    </div>
+                    <div class="form-hint" th:if="${product.id != null}">Harga beli terakhir dari pembelian</div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <span th:text="${product.id != null} ? 'Update Produk' : 'Simpan Produk'"></span>
+                </button>
+                <a th:href="@{/product/list(role=${userRole})}" class="btn btn-secondary">
+                    Batal
+                </a>
+            </div>
+        </form>
+    </div>
+    
+    <script src="/js/product.js"></script>
+</body>
+</html>

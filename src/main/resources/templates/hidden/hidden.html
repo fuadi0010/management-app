@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Manajemen Produk</title>
+    <link rel="stylesheet" href="/css/product.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- BACK TO DASHBOARD (NULL-SAFE) -->
+      
+      <h1>Manajemen Produk</h1>
+      <div
+      >
+        <a th:href="@{/admin/dashboard}" class="btn btn-secondary">
+          ← Kembali ke Admin Dashboard
+        </a>
+      </div>
+
+      <!-- ================= FILTER ACTIVE PRODUCTS ================= -->
+      <form method="get" th:action="@{/product/manage}" class="filter-bar">
+        <input
+          type="text"
+          name="activeKeyword"
+          placeholder="Cari produk aktif..."
+          th:value="${activeKeyword}"
+        />
+
+        <select name="activeSort">
+          <option value="name_asc" th:selected="${activeSort == 'name_asc'}">
+            Nama ↑
+          </option>
+          <option value="name_desc" th:selected="${activeSort == 'name_desc'}">
+            Nama ↓
+          </option>
+          <option value="stock_asc" th:selected="${activeSort == 'stock_asc'}">
+            Stok ↑
+          </option>
+          <option
+            value="stock_desc"
+            th:selected="${activeSort == 'stock_desc'}"
+          >
+            Stok ↓
+          </option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Cari</button>
+      </form>
+
+      <!-- ================= ACTIVE PRODUCTS ================= -->
+      <section>
+        <h2>Produk Aktif</h2>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Kode</th>
+              <th>Nama Produk</th>
+              <th>Stok</th>
+              <th>Harga Jual</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="p : ${activeProducts}">
+              <td th:text="${p.productCode}"></td>
+              <td th:text="${p.productName}"></td>
+              <td th:text="${p.currentStock}"></td>
+              <td>
+                Rp
+                <span
+                  th:text="${#numbers.formatDecimal(p.standardSellingPrice,0,'COMMA',2,'POINT')}"
+                >
+                </span>
+              </td>
+              <td>
+                <a
+                  th:if="${user != null and user.role.name() == 'ADMIN'}"
+                  th:href="@{/product/hide/{id}(id=${p.id})}"
+                  class="btn btn-warning"
+                  onclick="return confirm('Sembunyikan produk ini?')"
+                >
+                  Hide
+                </a>
+              </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(activeProducts)}">
+              <td colspan="6">Tidak ada produk aktif</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr />
+
+      <!-- ================= FILTER HIDDEN PRODUCTS ================= -->
+      <form
+        method="get"
+        th:action="@{/product/manage}"
+        class="filter-bar"
+        th:if="${user != null and user.role.name() == 'ADMIN'}"
+      >
+        <input
+          type="text"
+          name="hiddenKeyword"
+          placeholder="Cari produk tersembunyi..."
+          th:value="${hiddenKeyword}"
+        />
+
+        <select name="hiddenSort">
+          <option value="name_asc" th:selected="${hiddenSort == 'name_asc'}">
+            Nama ↑
+          </option>
+          <option value="name_desc" th:selected="${hiddenSort == 'name_desc'}">
+            Nama ↓
+          </option>
+          <option value="stock_asc" th:selected="${hiddenSort == 'stock_asc'}">
+            Stok ↑
+          </option>
+          <option
+            value="stock_desc"
+            th:selected="${hiddenSort == 'stock_desc'}"
+          >
+            Stok ↓
+          </option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Cari</button>
+      </form>
+
+      <!-- ================= HIDDEN PRODUCTS ================= -->
+      <section th:if="${user != null and user.role.name() == 'ADMIN'}">
+        <h2>Produk Tersembunyi</h2>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Kode</th>
+              <th>Nama Produk</th>
+              <th>Stok</th>
+              <th>Harga Jual</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="p : ${hiddenProducts}">
+              <td th:text="${p.productCode}"></td>
+              <td th:text="${p.productName}"></td>
+              <td th:text="${p.currentStock}"></td>
+              <td>
+                Rp
+                <span
+                  th:text="${#numbers.formatDecimal(p.standardSellingPrice,0,'COMMA',2,'POINT')}"
+                >
+                </span>
+              </td>
+              <td>
+                <a
+                  th:href="@{/product/unhide/{id}(id=${p.id})}"
+                  class="btn btn-success"
+                  onclick="return confirm('Aktifkan kembali produk ini?')"
+                >
+                  Unhide
+                </a>
+              </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(hiddenProducts)}">
+              <td colspan="6">Tidak ada produk tersembunyi</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Manajemen Staff</title>
+    <link rel="stylesheet" href="/css/product.css" />
+  </head>
+  <body>
+    <div class="container">
+      <a th:href="@{/admin/dashboard}" class="btn btn-secondary">
+        ← Kembali ke Admin Dashboard
+      </a>
+
+      <h1>Manajemen Staff</h1>
+
+      <!-- ================= ACTIVE STAFF ================= -->
+      <section>
+        <h2>Staff Aktif</h2>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="u : ${activeStaffs}">
+              <td th:text="${u.name}"></td>
+              <td th:text="${u.email}"></td>
+              <td th:text="${u.status}"></td>
+              <td>
+                <form
+                  th:action="@{/admin/users/ban/{id}(id=${u.id})}"
+                  method="post"
+                  style="display: inline"
+                  onsubmit="return confirm('Ban staff ini?')"
+                >
+                  <button type="submit" class="btn btn-warning">Ban</button>
+                </form>
+              </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(activeStaffs)}">
+              <td colspan="4">Tidak ada staff aktif</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr />
+
+      <!-- ================= BANNED STAFF ================= -->
+      <section>
+        <h2>Staff Diblokir</h2>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="u : ${bannedStaffs}">
+              <td th:text="${u.name}"></td>
+              <td th:text="${u.email}"></td>
+              <td th:text="${u.status}"></td>
+
+              <td>
+                <th:block th:if="${u.status.name() == 'BANNED'}">
+                  <form
+                    th:action="@{/admin/users/delete/{id}(id=${u.id})}"
+                    method="post"
+                    style="display: inline"
+                    onsubmit="return confirm('Hapus permanen staff ini?')"
+                  >
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                  </form>
+                </th:block>
+              </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(bannedStaffs)}">
+              <td colspan="4">Tidak ada staff diblokir</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Staff Dashboard</title>
+    <link rel="stylesheet" href="/css/staff-dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- SIDEBAR KIRI - Informasi Staff -->
+        <div class="sidebar">
+            <!-- Info Staff -->
+            <div class="staff-info">
+                <div class="staff-avatar">
+                    👤
+                </div>
+                <div class="staff-name" th:text="${user?.name}">Nama Staff</div>
+                <div class="staff-role">STAFF</div>
+                
+                <div class="staff-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Email</div>
+                        <div class="detail-value" th:text="${user?.email}">staff@example.com</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Login Terakhir</div>
+                        <div class="detail-value">Hari ini, <span class="sidebar-clock">09:30</span></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Status</div>
+                        <div class="detail-value" style="color: #4ade80;">● Aktif</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Logout Link (diubah dari button) -->
+            <a href="/access/logout" class="logout-btn" 
+               onclick="return confirm('Anda yakin ingin logout?')">
+                <span>🚪</span>
+                <span>Logout</span>
+            </a>
+        </div>
+        
+        <!-- KONTEN UTAMA KANAN -->
+        <div class="main-content">
+            <!-- Header Dashboard -->
+            <div class="dashboard-header">
+                <h1 class="header-title" th:text="${pageTitle}">Staff Dashboard</h1>
+                <p class="header-subtitle" th:text="${pageSubtitle}">Operational System</p>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h2 class="section-title">⚡ Akses Cepat</h2>
+                
+                <div class="actions-grid">
+                    <a th:href="@{/main/products(role='staff')}" class="action-card">
+                        <div class="action-icon">📦</div>
+                        <div class="action-title">Kelola Produk</div>
+                        <div class="action-desc">Lihat, tambah, edit data produk dan stok</div>
+                    </a>
+                    <a th:href="@{/main/suppliers(role='staff')}" class="action-card">
+                        <div class="action-icon">👥</div>
+                        <div class="action-title">Kelola Supplier</div>
+                        <div class="action-desc">Lihat dan kelola data supplier</div>
+                    </a>
+                    
+                    <a th:href="@{/main/purchases(role='staff')}" class="action-card">
+                        <div class="action-icon">🛒</div>
+                        <div class="action-title">Input Pembelian</div>
+                        <div class="action-desc">Buat pembelian baru dari supplier</div>
+                    </a>
+                    
+                    <a th:href="@{/main/invoices(role='staff')}" class="action-card">
+                        <div class="action-icon">📄</div>
+                        <div class="action-title">Buat Invoice</div>
+                        <div class="action-desc">Buat invoice penjualan baru</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load JavaScript file -->
+    <script src="/js/staff-dashboard.js"></script>
+</body>
+</html>

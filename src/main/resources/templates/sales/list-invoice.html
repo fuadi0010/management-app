@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Invoice Penjualan</title>
+    <link rel="stylesheet" href="/css/sales.css" />
+  </head>
+  <body>
+    <div class="page-header">
+      <h1></h1>
+    </div>
+
+    <main class="container">
+      <div class="main-container">
+        <!-- Back Button -->
+
+        <!-- Header with Role Info -->
+        <div class="header-container">
+          <div>
+            <h2>Daftar Invoice Penjualan</h2>
+            <div class="role-badge">
+              Role: <strong th:text="${userRole}"></strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-btns">
+          <a th:href="${dashboardUrl}" class="back-btn">
+            ← Kembali ke Dashboard
+            <span th:text="${userRole == 'admin' ? 'Admin' : 'Staff'}"></span>
+          </a>
+          <a th:href="@{/sales/add(role=${userRole})}" class="btn btn-primary">
+            + Tambah Invoice Baru
+          </a>
+        </div>
+
+        <!-- Success Message -->
+        <div th:if="${success}" class="success-message">
+          ✅ <span th:text="${success}"></span>
+        </div>
+
+        <!-- Error Message -->
+        <div th:if="${error}" class="error-message">
+          ❌ <span th:text="${error}"></span>
+        </div>
+        <form method="get" th:action="@{/sales/list}">
+          <input type="hidden" name="role" th:value="${userRole}" />
+
+          <input
+            type="text"
+            name="keyword"
+            placeholder="Cari No Invoice / Customer"
+            th:value="${keyword}"
+          />
+
+          <select name="sort">
+            <option value="date_desc" th:selected="${sort == 'date_desc'}">
+              Tanggal Terbaru
+            </option>
+            <option value="date_asc" th:selected="${sort == 'date_asc'}">
+              Tanggal Terlama
+            </option>
+            <option value="total_desc" th:selected="${sort == 'total_desc'}">
+              Total Terbesar
+            </option>
+            <option value="total_asc" th:selected="${sort == 'total_asc'}">
+              Total Terkecil
+            </option>
+          </select>
+
+          <button type="submit" class="btn btn-primary">Cari</button>
+        </form>
+
+        <!-- Invoices Table -->
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>No Invoice</th>
+              <th>Customer</th>
+              <th>Tanggal</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="invoice : ${invoices}">
+              <td th:text="${invoice.invoiceNumber}"></td>
+              <td th:text="${invoice.customerName}"></td>
+              <td
+                th:text="${#temporals.format(invoice.invoiceDate, 'dd-MM-yyyy')}"
+              ></td>
+              <td class="currency">
+                <span
+                  th:text="${#numbers.formatDecimal(invoice.totalSales, 0, 'COMMA', 2, 'POINT')}"
+                ></span>
+              </td>
+              <td>
+                <span
+                  th:classappend="'status-badge status-' + ${invoice.salesStatus?.toString()?.toLowerCase()}"
+                  th:text="${invoice.salesStatus}"
+                >
+                </span>
+              </td>
+              <td>
+                <div class="btn-group" style="gap: 4px">
+                  <a
+                    th:href="@{/sales/view/{id}(id=${invoice.id}, role=${userRole})}"
+                    class="btn btn-success btn-small"
+                    >Lihat</a
+                  >
+
+                  <a
+                    th:if="${invoice.salesStatus?.toString() == 'CREATED'}"
+                    th:href="@{/sales/complete/{id}(id=${invoice.id}, role=${userRole})}"
+                    class="btn btn-warning btn-small"
+                    >Selesai</a
+                  >
+
+                  <a
+                    th:if="${invoice.salesStatus?.toString() != 'CANCELLED'}"
+                    th:href="@{/sales/cancel/{id}(id=${invoice.id}, role=${userRole})}"
+                    class="btn btn-danger btn-small"
+                    >Batal</a
+                  >
+                </div>
+              </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(invoices)}">
+              <td colspan="6" class="empty-state">
+                <div class="empty-state-icon">📄</div>
+                <p>Tidak ada data invoice penjualan</p>
+                <a
+                  th:href="@{/sales/add(role=${userRole})}"
+                  class="btn btn-primary mt-3"
+                >
+                  + Buat Invoice Pertama
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Footer -->
+        <div class="footer">
+          <p>&copy; 2025 Sales Invoice Management</p>
+        </div>
+      </div>
+    </main>
+
+    <script src="/js/sales.js"></script>
+  </body>
+</html>

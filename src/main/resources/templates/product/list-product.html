@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Produk</title>
+    <link rel="stylesheet" href="/css/product.css" />
+  </head>
+  <body class="list-page">
+    <div class="container">
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1 class="page-title">DAFTAR PRODUK</h1>
+      </div>
+
+      <!-- Action Bar -->
+      <div class="action-bar">
+        <div class="action-left">
+          <a th:href="${dashboardUrl}" class="btn btn-back">
+            ← Dashboard
+            <span th:text="${userRole == 'admin' ? 'Admin' : 'Staff'}"></span>
+          </a>
+        </div>
+        <div class="action-right">
+          <a
+            th:href="@{/product/add(role=${userRole})}"
+            class="btn btn-primary"
+          >
+            + Tambah Produk
+          </a>
+        </div>
+      </div>
+
+      <!-- Content Container -->
+      <div class="content-container">
+        <!-- Flash Messages -->
+        <div th:if="${successMessage}" class="alert alert-success">
+          <span th:text="${successMessage}"></span>
+        </div>
+
+        <div th:if="${errorMessage}" class="alert alert-error">
+          <span th:text="${errorMessage}"></span>
+        </div>
+
+        <!-- Stats Container -->
+        <div class="stats-container compact">
+          <div class="stat-card">
+            <div class="stat-label">Total Produk</div>
+            <div class="stat-value" th:text="${products.size()}">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Stok</div>
+            <div
+              class="stat-value"
+              th:text="${#aggregates.sum(products.![currentStock])}"
+            >
+              0
+            </div>
+          </div>
+        </div>
+
+        <!-- Table Container -->
+        <div class="table-container">
+          <div class="table-header">
+            <h2>Produk Tersedia</h2>
+            <div class="table-actions">
+              <form method="get" action="/product/list" class="search-form">
+                <input
+                  type="text"
+                  name="keyword"
+                  placeholder="Cari produk..."
+                  th:value="${keyword}"
+                  class="search-input"
+                />
+                <input type="hidden" name="role" th:value="${userRole}" />
+                <button type="submit" class="btn btn-secondary btn-small">Cari</button>
+              </form>
+            </div>
+          </div>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="text-center">No</th>
+                <th>Kode</th>
+                <th>Nama</th>
+                <th class="text-center">Stok</th>
+                <th class="text-right">Harga Jual</th>
+                <th class="text-right">Harga Beli</th>
+                <th class="text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="product, stat : ${products}">
+                <td class="text-center" th:text="${stat.count}">1</td>
+                <td>
+                  <span class="product-code" th:text="${product.productCode}"></span>
+                </td>
+                <td>
+                  <div class="product-name" th:text="${product.productName}"></div>
+                </td>
+                <td class="text-center">
+                  <span
+                    class="stock-badge"
+                    th:classappend="${product.currentStock == 0} ? 'out-of-stock' : 
+                      (${product.currentStock < 10} ? 'low-stock' : 'in-stock')"
+                    th:text="${product.currentStock}"
+                  ></span>
+                </td>
+                <td class="text-right">
+                  Rp
+                  <span
+                    th:text="${#numbers.formatDecimal(product.standardSellingPrice, 0, 'COMMA', 2, 'POINT')}"
+                  ></span>
+                </td>
+                <td class="text-right">
+                  Rp
+                  <span
+                    th:text="${#numbers.formatDecimal(product.lastPurchasePrice, 0, 'COMMA', 2, 'POINT')}"
+                  ></span>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <a
+                      th:href="@{/product/add(id=${product.id}, role=${userRole})}"
+                      class="btn-action btn-edit"
+                    >
+                      Edit
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(products)}">
+                <td colspan="7" class="empty-state">
+                  Tidak ada data produk
+                  <a
+                    th:href="@{/product/add(role=${userRole})}"
+                    class="btn btn-primary btn-small"
+                  >
+                    + Tambah Produk Pertama
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/product.js"></script>
+  </body>
+</html>

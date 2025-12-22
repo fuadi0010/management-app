@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Supplier List</title>
+    <link rel="stylesheet" href="/css/supplier.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Supplier Management</h1>
+    </header>
+
+    <main class="container">
+      <div class="main-container">
+        <!-- Header Container -->
+        <div class="header-container">
+          <div>
+            <h2>Supplier List</h2>
+            <div class="role-badge">
+              <span>Role:</span> <strong th:text="${userRole}"></strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-btns">
+          <!-- Back Button -->
+          <a th:href="${dashboardUrl}" class="back-btn">
+            ← Kembali ke Dashboard
+            <span th:text="${userRole == 'admin' ? 'Admin' : 'Staff'}"></span>
+          </a>
+          <a
+            th:href="@{/supplier/add(role=${userRole})}"
+            class="btn btn-primary"
+          >
+            + Tambah Supplier Baru
+          </a>
+        </div>
+
+        <!-- Flash Messages -->
+        <div th:if="${successMessage}" class="flash-message flash-success">
+          ✅ <span th:text="${successMessage}"></span>
+        </div>
+
+        <div th:if="${errorMessage}" class="flash-message flash-error">
+          ❌ <span th:text="${errorMessage}"></span>
+        </div>
+        <form method="get" th:action="@{/supplier/list}">
+          <input type="hidden" name="role" th:value="${userRole}" />
+
+          <input
+            type="text"
+            name="keyword"
+            placeholder="Cari supplier..."
+            th:value="${keyword}"
+          />
+
+          <select name="sort">
+            <option value="id_desc" th:selected="${sort == 'id_desc'}">
+              Terbaru
+            </option>
+            <option value="name_asc" th:selected="${sort == 'name_asc'}">
+              Nama A–Z
+            </option>
+            <option value="name_desc" th:selected="${sort == 'name_desc'}">
+              Nama Z–A
+            </option>
+          </select>
+
+          <button type="submit" class="btn btn-primary">Cari</button>
+        </form>
+
+        <!-- Supplier Table -->
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Supplier Name</th>
+              <th>Telephone Number</th>
+              <th>Address</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="p : ${supplier}">
+              <td th:text="${p.id}">ID</td>
+              <td th:text="${p.supplierName}">Supplier Name</td>
+              <td th:text="${p.telephoneNumber}">Telephone Number</td>
+              <td th:text="${p.address}">Address</td>
+              <td>
+                <div class="btn-group">
+                  <div class="btn-group">
+                    <!-- EDIT = GET -->
+                    <a
+                      th:href="@{/supplier/edit-supplier/{id}(id=${p.id}, role=${userRole})}"
+                      class="btn btn-warning"
+                    >
+                      Edit
+                    </a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.isEmpty(supplier)}" class="alert alert-info">
+          Supplier data is not available.
+          <a
+            th:href="@{/supplier/add(role=${userRole})}"
+            class="btn btn-primary btn-small"
+          >
+            Add Supplier
+          </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+          <p>&copy; 2025 Supplier Management System</p>
+        </div>
+      </div>
+    </main>
+    <script src="/js/supplier.js"></script>
+  </body>
+</html>

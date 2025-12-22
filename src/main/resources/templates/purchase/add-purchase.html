@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tambah Pembelian</title>
+    <link rel="stylesheet" href="/css/purchase.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Tambah Pembelian Baru</h1>
+          <p class="page-subtitle">Input data pembelian dari supplier</p>
+        </div>
+      </div>
+
+      <!-- ALERT -->
+      <div
+        th:if="${success}"
+        class="alert alert-success"
+        th:text="${success}"
+      ></div>
+      <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+      <!-- FORM -->
+      <form
+        class="purchase-form"
+        th:action="@{/purchase/add}"
+        method="post"
+        th:object="${purchase}"
+      >
+        <input type="hidden" name="role" th:value="${userRole}" />
+
+        <!-- SUPPLIER -->
+        <div class="form-group">
+          <label>Supplier</label>
+          <select class="form-select" th:field="*{supplier.id}" required>
+            <option value="">-- Pilih Supplier --</option>
+            <option
+              th:each="s : ${suppliers}"
+              th:value="${s.id}"
+              th:text="${s.supplierName}"
+            ></option>
+          </select>
+        </div>
+
+        <!-- REFERENCE -->
+        <div class="form-group">
+          <label>No. Referensi</label>
+          <input
+            type="text"
+            class="form-input"
+            th:field="*{referenceNumber}"
+            placeholder="INV-001"
+            required
+          />
+        </div>
+
+        <!-- DETAIL -->
+        <h3 class="section-title">Detail Barang</h3>
+
+        <!-- TEMPLATE PRODUCT -->
+        <select id="productTemplate" style="display: none">
+          <option value="">-- Pilih Produk --</option>
+          <option
+            th:each="p : ${products}"
+            th:value="${p.id}"
+            th:text="${p.productName}"
+          ></option>
+        </select>
+
+        <div id="items" class="items-container"></div>
+
+        <button type="button" class="btn btn-add-item" onclick="addRow()">
+          + Tambah Barang
+        </button>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">
+            Simpan Pembelian
+          </button>
+          <a
+            th:href="@{/purchase/list(role=${userRole})}"
+            class="btn btn-cancel"
+            >Batal</a
+          >
+        </div>
+      </form>
+    </div>
+
+    <script src="/js/purchase.js"></script>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Finance Report Preview</title>
+    <link rel="stylesheet" href="/css/report.css" />
+  </head>
+  <body>
+    <div style="margin-bottom: 20px">
+      <a th:href="@{/admin/dashboard}" class="btn-back">
+        ← Kembali ke Dashboard
+      </a>
+    </div>
+    <h1>Finance Report Preview</h1>
+
+    <!-- ================= FORM PILIH PERIODE ================= -->
+    <form method="get" th:action="@{/report/finance/preview}" class="date-range-form">
+
+  <div class="date-group">
+    <label>Start Date</label>
+    <input type="date" id="startDate" name="startDate"
+           th:value="${startDate}" required>
+  </div>
+
+  <div class="date-group">
+    <label>End Date</label>
+    <input type="date" id="endDate" name="endDate"
+           th:value="${endDate}" required>
+  </div>
+
+  <button type="submit">Preview</button>
+</form>
+
+
+    <hr />
+    <div th:if="${errorMessage}" style="color: red; margin-bottom: 15px">
+      ⚠️ <span th:text="${errorMessage}"></span>
+    </div>
+
+    <!-- ================= HASIL PREVIEW ================= -->
+    <div th:if="${previewReady}">
+      <h2>Ringkasan</h2>
+
+      <table border="1" cellpadding="8">
+        <tr>
+          <th>Total Pemasukan</th>
+          <td>Rp <span th:text="${totalIncome}"></span></td>
+        </tr>
+        <tr>
+          <th>Total Pengeluaran</th>
+          <td>Rp <span th:text="${totalExpense}"></span></td>
+        </tr>
+        <tr>
+          <th>Saldo Bersih</th>
+          <td>Rp <span th:text="${netBalance}"></span></td>
+        </tr>
+        <tr>
+          <th>Jumlah Invoice</th>
+          <td th:text="${incomeCount}"></td>
+        </tr>
+        <tr>
+          <th>Jumlah Purchase</th>
+          <td th:text="${expenseCount}"></td>
+        </tr>
+      </table>
+
+      <br />
+
+      <!-- ================= TOMBOL CETAK (HANYA MUNCUL SETELAH PREVIEW) ================= -->
+      <a
+        th:href="@{/report/finance/pdf(
+            startDate=${startDate},
+            endDate=${endDate}
+        )}"
+      >
+        Cetak PDF
+      </a>
+    </div>
+  </body>
+</html>
