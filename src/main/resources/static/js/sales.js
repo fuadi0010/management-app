@@ -99,8 +99,6 @@ function addItemRow() {
                 onclick="removeRow(this)">
             ✕
         </button>
-
-        <div class="subtotal-preview">Rp 0</div>
     `;
 
     items.appendChild(row);

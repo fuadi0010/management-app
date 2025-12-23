@@ -33,13 +33,15 @@ public class InvoiceService {
         return salesInvoiceRepository.findAll();
     }
 
-    // Method untuk mengambil satu invoice berdasarkan ID dengan validasi keberadaan data
+    // Method untuk mengambil satu invoice berdasarkan ID dengan validasi keberadaan
+    // data
     public SalesInvoice getSalesInvoiceByid(Long id) {
         return salesInvoiceRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invoice tidak ditemukan"));
     }
 
-    // Method untuk membuat invoice penjualan baru dengan perhitungan harga dan validasi server-side
+    // Method untuk membuat invoice penjualan baru dengan perhitungan harga dan
+    // validasi server-side
     @Transactional
     public SalesInvoice createInvoice(SalesInvoice invoice) {
 
@@ -52,12 +54,11 @@ public class InvoiceService {
                 .map(d -> d.getProduct().getId())
                 .toList();
 
-        Map<Long, Product> productMap =
-                productRepository.findAllById(productIds)
-                        .stream()
-                        .collect(Collectors.toMap(
-                                Product::getId,
-                                p -> p));
+        Map<Long, Product> productMap = productRepository.findAllById(productIds)
+                .stream()
+                .collect(Collectors.toMap(
+                        Product::getId,
+                        p -> p));
 
         BigDecimal total = BigDecimal.ZERO;
 
@@ -83,8 +84,7 @@ public class InvoiceService {
             d.setProduct(product);
             d.setUnitSellingPrice(unitPrice);
 
-            BigDecimal subtotal =
-                    unitPrice.multiply(BigDecimal.valueOf(d.getQuantity()));
+            BigDecimal subtotal = unitPrice.multiply(BigDecimal.valueOf(d.getQuantity()));
 
             d.setSubtotal(subtotal);
             total = total.add(subtotal);
@@ -94,9 +94,8 @@ public class InvoiceService {
                 && invoice.getVatPercentage()
                         .compareTo(BigDecimal.ZERO) > 0) {
 
-            BigDecimal vat =
-                    total.multiply(invoice.getVatPercentage())
-                            .divide(BigDecimal.valueOf(100));
+            BigDecimal vat = total.multiply(invoice.getVatPercentage())
+                    .divide(BigDecimal.valueOf(100));
 
             total = total.add(vat);
         }
@@ -139,31 +138,22 @@ public class InvoiceService {
     public boolean cancelSales(Long id) {
 
         SalesInvoice salesInvoice = getSalesInvoiceByid(id);
+        if (salesInvoice.getSalesStatus() == SalesStatus.COMPLETED) {
+            throw new IllegalStateException(
+                    "Invoice dengan status COMPLETED tidak bisa dibatalkan atau dihapus");
+        }
 
         if (salesInvoice.getSalesStatus() == SalesStatus.CANCELLED) {
             throw new IllegalStateException("Invoice sudah dibatalkan");
         }
-
-        if (salesInvoice.getSalesStatus() == SalesStatus.COMPLETED) {
-
-            for (InvoiceDetails detail
-                    : salesInvoice.getInvoiceDetails()) {
-
-                Product product = detail.getProduct();
-
-                product.setCurrentStock(
-                        product.getCurrentStock()
-                                + detail.getQuantity());
-            }
-        }
-
         salesInvoice.setSalesStatus(SalesStatus.CANCELLED);
         salesInvoiceRepository.save(salesInvoice);
 
         return true;
     }
 
-    // Method untuk mencari dan mengurutkan invoice berdasarkan keyword dan parameter sorting
+    // Method untuk mencari dan mengurutkan invoice berdasarkan keyword dan
+    // parameter sorting
     public List<SalesInvoice> searchAndSort(
             String keyword,
             String sort) {

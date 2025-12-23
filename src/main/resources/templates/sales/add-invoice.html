@@ -15,7 +15,7 @@
       <div class="main-container">
         <!-- Error Message -->
         <div th:if="${error}" class="error-message">
-          ❌ <span th:text="${error}"></span>
+          <span th:text="${error}"></span>
         </div>
 
         <!-- Back Button -->
@@ -110,11 +110,6 @@
 
           <!-- Total Display -->
           <div class="form-group mt-4" style="text-align: right">
-            <div
-              style="font-size: 18px; font-weight: 600; color: var(--text-dark)"
-            >
-              Total: <span id="totalDisplay" class="currency">Rp 0</span>
-            </div>
             <input type="hidden" th:field="*{totalSales}" />
           </div>
 

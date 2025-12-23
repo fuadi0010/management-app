@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.app.management.model.sales.SalesInvoice;
 import com.app.management.model.sales.SalesStatus;
 
+@Repository
 public interface SalesInvoiceRepository extends JpaRepository<SalesInvoice, Long> {
 
     List<SalesInvoice> findBySalesStatusAndInvoiceDateBetween(

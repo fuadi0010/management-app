@@ -13,7 +13,6 @@
 
     <main class="container">
       <div class="main-container">
-
         <!-- Header with Role Info -->
         <div class="header-container">
           <div>
@@ -119,11 +118,12 @@
                   >
 
                   <a
-                    th:if="${invoice.salesStatus?.toString() != 'CANCELLED'}"
+                    th:if="${invoice.salesStatus?.toString() == 'CREATED'}"
                     th:href="@{/sales/cancel/{id}(id=${invoice.id}, role=${userRole})}"
                     class="btn btn-danger btn-small"
-                    >Batal</a
                   >
+                    Batal
+                  </a>
                 </div>
               </td>
             </tr>
