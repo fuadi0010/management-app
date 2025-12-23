@@ -1,7 +1,3 @@
-/**
- * product.js - PURE UI/UX JavaScript (No Business Logic)
- * Hanya untuk interaksi UI, animasi, dan manipulasi DOM
- */
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Pure UI JS loaded');
@@ -232,10 +228,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('Pure UI JS initialization complete - No business logic');
 });
-
-// ===== PURE UTILITY FUNCTIONS =====
-// Fungsi-fungsi murni untuk manipulasi UI
-
 /**
  * Toggle element visibility (Pure UI)
  */

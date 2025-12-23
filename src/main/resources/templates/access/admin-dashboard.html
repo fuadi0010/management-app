@@ -4,11 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard Admin - Sistem Manajemen</title>
-    <!-- Link ke CSS terpisah -->
+
     <link rel="stylesheet" th:href="@{/css/admin-dashboard.css}" />
   </head>
   <body>
-    <!-- Header -->
     <div class="header">
       <div class="header-container">
         <h2 style="margin: 0">Sistem Manajemen - Admin Dashboard</h2>
@@ -21,9 +20,7 @@
       </div>
     </div>
 
-    <!-- Main Container -->
     <div class="main-container">
-      <!-- Sidebar Navigasi -->
       <div class="sidebar">
         <h3 class="sidebar-title">Menu Admin</h3>
 
@@ -77,9 +74,7 @@
         </div>
       </div>
 
-      <!-- Konten Utama -->
       <div class="content">
-        <!-- Info Admin -->
         <div class="admin-info">
           <h3 class="info-title">Informasi Admin</h3>
           <table class="info-table">
@@ -100,7 +95,6 @@
           </table>
         </div>
 
-        <!-- Panel Kontrol Admin - Hanya User Pending -->
         <div>
           <h3 class="panel-title">Manajemen User Pending</h3>
           <p style="margin-bottom: 20px; color: #065f46; font-size: 1.1rem">
@@ -108,7 +102,6 @@
             perlu disetujui
           </p>
 
-          <!-- Statistik User -->
           <div class="stats-grid">
             <div class="stat-card">
               <div class="stat-number stat-total" th:text="${totalUsers}">
@@ -135,7 +128,6 @@
             </div>
           </div>
 
-          <!-- Tabel User Pending -->
           <div class="pending-container">
             <div class="table-header">
               <div class="header-content">
@@ -206,7 +198,6 @@
             </div>
           </div>
 
-          <!-- Instruksi -->
           <div class="instructions">
             <h4 class="instructions-title">Instruksi:</h4>
             <ol class="instructions-list">
@@ -225,7 +216,6 @@
       </div>
     </div>
 
-    <!-- Footer -->
     <div class="footer">
       <div class="footer-container">
         <p class="footer-text">

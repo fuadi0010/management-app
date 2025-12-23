@@ -1,4 +1,3 @@
-// invoice.js - UX ONLY (NO BUSINESS LOGIC)
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -64,9 +63,7 @@ function previewSubtotal(inputQty, price, targetElement) {
     const subtotal = qty * price;
     targetElement.textContent = formatCurrencyPreview(subtotal);
 }
-/* ================= ADD / REMOVE ROW (UX ONLY) ================= */
-
-/* ================= ADD / REMOVE ROW (UX ONLY) ================= */
+/* ================= ADD / REMOVE ROW ================= */
 
 const MAX_ROWS = 5;
 

@@ -1,4 +1,3 @@
-// auth.js - UX ONLY (NO BUSINESS LOGIC)
 
 document.addEventListener('DOMContentLoaded', () => {
 

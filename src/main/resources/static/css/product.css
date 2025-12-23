@@ -1,8 +1,3 @@
-/* ===== MODERN BUSINESS THEME - TEMA BIRU PROFESIONAL ===== */
-/* Primary: #234C6A (Biru Sedang) */
-/* Secondary: #456882 (Biru Terang) */
-/* Accent: #FFB946 (Oranye/Emas) */
-/* Neutral: #E3E3E3, #1B3C53, #FFFFFF */
 
 /* ===== RESET & BASE ===== */
 * {
@@ -610,7 +605,7 @@ body {
     font-size: 48px;
 }
 
-/* ===== SECTION STYLES (Staff & Product Management) ===== */
+/* ===== SECTION STYLES ===== */
 section {
     margin-bottom: 40px;
 }
@@ -765,10 +760,6 @@ hr {
         -webkit-print-color-adjust: exact;
     }
 }
-/* =========================================================
-   PRODUCT MANAGEMENT – ACTIVE vs HIDDEN VISUAL SEPARATION
-   (ADD-ON ONLY, SAFE FOR EXISTING THEME)
-   ========================================================= */
 
 /* ACTIVE PRODUCT SECTION */
 section:first-of-type {

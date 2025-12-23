@@ -1,7 +1,3 @@
-// ============================================
-// STAFF DASHBOARD JAVASCRIPT
-// File: staff-dashboard.js
-// ============================================
 
 class StaffDashboard {
     constructor() {
