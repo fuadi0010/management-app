@@ -28,7 +28,7 @@ public class ManagementApplication {
                 User admin = new User();
                 admin.setName("Administrator");
                 admin.setEmail("admin@gmail.com");
-                admin.setPassword("admin123"); // plain text (sesuai permintaan)
+                admin.setPassword("admin123");
                 admin.setRole(Role.ADMIN);
                 admin.setStatus(UserStatus.ACTIVE);
                 admin.setCreatedAt(LocalDateTime.now());
