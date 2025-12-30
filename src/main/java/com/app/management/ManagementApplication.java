@@ -3,7 +3,7 @@ package com.app.management;
 import com.app.management.model.user.Role;
 import com.app.management.model.user.User;
 import com.app.management.model.user.UserStatus;
-import com.app.management.repository.UserRepository;
+import com.app.management.repository.UserRepository; 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

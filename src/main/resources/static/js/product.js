@@ -2,12 +2,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Pure UI JS loaded');
     
-    // ===== PURE UI ENHANCEMENTS =====
-    
-    // 1. FORM INPUT ENHANCEMENT (Pure UX)
     const numberInputs = document.querySelectorAll('input[type="number"]');
     numberInputs.forEach(input => {
-        // Hanya fokus enhancement
         input.addEventListener('focus', function() {
             this.style.backgroundColor = '#f5f9ff';
             this.style.borderColor = '#234C6A';
@@ -19,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 2. BUTTON HOVER EFFECTS (Pure UI)
     const buttons = document.querySelectorAll('.btn, .btn-action');
     buttons.forEach(button => {
         button.addEventListener('mouseenter', function() {
@@ -32,8 +27,6 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.boxShadow = '';
         });
     });
-    
-    // 3. TABLE ROW HIGHLIGHT (Pure UI)
     const tableRows = document.querySelectorAll('.data-table tbody tr');
     tableRows.forEach(row => {
         row.addEventListener('mouseenter', function() {
@@ -45,11 +38,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 4. CLEAR FORM ERRORS ON INPUT (Pure UX)
     const formInputs = document.querySelectorAll('.form-input');
     formInputs.forEach(input => {
         input.addEventListener('input', function() {
-            // Hanya menghapus styling error
             this.style.borderColor = '';
             const errorMsg = this.parentNode.querySelector('.error-message');
             if (errorMsg) {
@@ -58,12 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 5. RESPONSIVE TABLE HANDLING (Pure UI)
     function makeTablesResponsive() {
         const tables = document.querySelectorAll('.data-table');
         tables.forEach(table => {
             if (window.innerWidth < 768) {
-                // Hanya manipulasi tampilan
                 table.style.fontSize = '14px';
                 table.querySelectorAll('td, th').forEach(cell => {
                     cell.style.padding = '10px 8px';
@@ -77,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // 6. LOADING STATE FOR BUTTONS (Pure UI)
     const forms = document.querySelectorAll('form');
     forms.forEach(form => {
         form.addEventListener('submit', function() {
@@ -91,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 7. SCROLL TO TOP FOR ACTION BUTTONS (Pure UX)
     const actionLinks = document.querySelectorAll('a[href*="#"], .btn-action');
     actionLinks.forEach(link => {
         link.addEventListener('click', function(e) {
@@ -110,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 8. AUTO-RESIZE TEXTAREA (Pure UI)
+    // 8. AUTO-RESIZE TEXTAREA
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => {
         textarea.addEventListener('input', function() {
@@ -119,13 +106,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 9. COPY TO CLIPBOARD FOR CODES (Pure UX)
+    // 9. COPY TO CLIPBOARD FOR CODES 
     const copyableCodes = document.querySelectorAll('.product-code');
     copyableCodes.forEach(code => {
         code.addEventListener('click', function() {
             const textToCopy = this.textContent;
             navigator.clipboard.writeText(textToCopy).then(() => {
-                // Visual feedback saja
+                
                 const originalText = this.textContent;
                 this.textContent = '✓ Copied!';
                 this.style.backgroundColor = '#d4e6ed';
@@ -141,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
         code.title = 'Click to copy';
     });
     
-    // 10. TOGGLE VISIBILITY FOR SENSITIVE DATA (Pure UI)
+    // 10. TOGGLE VISIBILITY FOR SENSITIVE DATA 
     const toggleButtons = document.querySelectorAll('.toggle-visibility');
     toggleButtons.forEach(button => {
         button.addEventListener('click', function() {
